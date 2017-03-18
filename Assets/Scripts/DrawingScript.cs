@@ -8,11 +8,15 @@ public class DrawingScript : MonoBehaviour {
     public GameObject currentTrans;
     public GameObject nodePrefab;
 
+    public float drawingCanvasMinX = -5f;
+    public float drawingCanvasMaxX = 5f;
+    public float drawingCanvasMinY = -5f;
+    public float drawingCanvasMaxY = 5f;
+
     public bool onDrawingCanvas = false;
 
     private GameObject beginNode;
-    private GameObject endNode;
-    
+    private GameObject endNode;    
 
 
 
@@ -37,7 +41,17 @@ public class DrawingScript : MonoBehaviour {
     void Update()
     {
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Input.mousePosition.z - Camera.main.transform.position.z));
-            mouseDown = Input.GetMouseButton(0);
+        mouseDown = Input.GetMouseButton(0);
+            
+        //Test if is onDrawingCanvas
+        if (mousePosition.x < drawingCanvasMaxX && mousePosition.x > drawingCanvasMinX && mousePosition.y < drawingCanvasMaxY && mousePosition.y > drawingCanvasMinY)
+        {
+            onDrawingCanvas = true;
+        }
+        else
+        {
+            onDrawingCanvas = false;
+        }
             if (onDrawingCanvas)
             {
                 if (!newNode)

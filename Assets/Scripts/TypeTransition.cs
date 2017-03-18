@@ -25,6 +25,7 @@ public class TypeTransition : MonoBehaviour {
         //Change le type du parent
 
         //Change le panneau du fils
+
     }
 
     void OnMouseEnter()

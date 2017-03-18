@@ -109,8 +109,11 @@ public class DrawingScript : MonoBehaviour
                     Debug.Log("Instantiating new Node");
                     //Activate new Node script and collider
                     newNode = false;
-                    myNewNode.GetComponent<Node>().enabled = true;
-                    myNewNode.GetComponent<CircleCollider2D>().enabled = true;
+                    if (myNewNode != null)
+                    {
+                        myNewNode.GetComponent<Node>().enabled = true;
+                        myNewNode.GetComponent<CircleCollider2D>().enabled = true;
+                    }
                     myNewNode = null;
                 }
             }

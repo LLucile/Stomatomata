@@ -1,10 +1,62 @@
 1
-orrrr
-xrrrb
-Ne contient que du rouge.
+orr
+xrb
+Contient 2 rouges.
 
 2
-orbbr
-orrrr
-xbbbb
-Ne contient pas plus que 2 bleus.
+ogr
+xrg
+xbb
+Contient 1 rouge puis 1 vert.
+
+3
+xr
+og
+obb
+Contient 1 vert ou 1 bleu.
+
+4
+orb
+xbg
+obr
+Contient 1 bleu et 1 rouge.
+
+5
+xgb
+oggg
+Ne contient que du vert.
+
+6
+xgrb
+ogbg
+Ne contient aucun rouge.
+
+7
+xbrb
+org
+Contient au minimum 1 vert.
+
+8
+obrb
+xgrg
+xbbb
+Contient au maximum 2 bleus.
+
+9
+xrbbb
+obgb
+oggr
+xbrgg
+Contient un nombre pair de bleus.
+
+10
+xrb
+ogr
+xbg
+Commence par 1 rouge.
+
+11
+xrggr
+oggbr
+xrbgg
+Finit par 2 verts.

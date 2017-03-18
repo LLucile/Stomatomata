@@ -16,6 +16,17 @@ public class Transition : MonoBehaviour {
     public GameObject startNode;
     public tType transitionType;
 
+    private bool onmouseOver = false;
+    public DrawingScript gameManager;
+
+    // Use this for initialization
+    void Start()
+    {
+        this.gameManager = GameObject.FindWithTag("GameManager").GetComponent<DrawingScript>();
+        Color tempcolor = this.transform.GetChild(0).GetComponent<SpriteRenderer>().color;
+        this.transform.GetChild(0).GetComponent<SpriteRenderer>().color = new Vector4(tempcolor[0], tempcolor[1], tempcolor[2], 1.0f);
+    }
+
     public bool eat(string skewer) {
         if (skewer[skewer.Length - 1] == 'r') {
             if (transitionType == tType.Green || transitionType == tType.Blue || transitionType == tType.NotRed) {
@@ -38,5 +49,19 @@ public class Transition : MonoBehaviour {
             }
         }
         return false;
+    }
+
+    void OnMouseExit()
+    {
+        this.onmouseOver = false;
+        gameManager.objectOver = null;
+        Debug.Log("you're leaving " + this.gameObject.name);
+    }
+
+    void OnMouseEnter()
+    {
+        this.onmouseOver = true;
+        gameManager.objectOver = this.gameObject;
+        Debug.Log("you're over " + this.gameObject.name);
     }
 }

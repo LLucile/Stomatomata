@@ -8,7 +8,7 @@ public class DrawingScript : MonoBehaviour {
     public GameObject currentTrans;
 
     private GameObject beginNode;
-
+    private GameObject endNode;
     
 
 
@@ -54,6 +54,18 @@ public class DrawingScript : MonoBehaviour {
                 Debug.Log("hey mouse is up !");
                 beginNode = null;
                 startedNewTrans = false;
+                if (this.objectOver == null)
+                {
+                    Debug.Log("Sorry but this is not a valid end object");
+                    this.currentTrans.GetComponent<Transition>().startNode.GetComponent<Node>().transitions.Remove(this.currentTrans);
+                    Destroy(this.currentTrans);
+                }
+                else
+                {
+                    //TODO snap on the edge of gameObject instead as anywhere
+                    this.endNode = this.objectOver;
+                    this.currentTrans.GetComponent<Transition>().endNode = this.endNode;
+                }
             }
         }
         if (mouseDown && startedNewTrans)
@@ -68,11 +80,12 @@ public class DrawingScript : MonoBehaviour {
             Debug.Log("hey check that nice distance mouse has ! Distance = " + mouseDistance);
             if (mouseDistance > 1)
             {
+                // TO DO : here we will need to add the sprite change for scale changes
                 currentTrans.transform.localScale = new Vector3(mouseDistance, mouseDistance, currentTrans.transform.localScale.z);
             }
             else
             {
-
+                //TO DO : here use self-node transition sprite
             }
         }
         previousmouseDown = mouseDown;

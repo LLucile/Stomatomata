@@ -15,6 +15,8 @@ public class Node : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		this.gameManager = GameObject.FindWithTag("GameManager").GetComponent<DrawingScript>();
+        Color tempcolor =  this.transform.GetChild(0).GetComponent<SpriteRenderer>().color;
+        this.transform.GetChild(0).GetComponent<SpriteRenderer>().color = new Vector4(tempcolor[0], tempcolor[1], tempcolor[2], 1.0f);
 	}
 	
 	// Update is called once per frame

@@ -84,19 +84,24 @@ public class DrawingScript : MonoBehaviour
         }
         if (previousmouseDown != mouseDown)
         {
-            Debug.Log(mouseDown);
+            //Debug.Log(mouseDown);
             if (mouseDown == true)
             {
                 Debug.Log("hey mouse is down !");
-                beginNode = this.objectOver;
+                
                 //Debug.Log("it is over " + this.objectOver.name);
-                if (beginNode != null)
+                if (objectOver != null)
                 {
-                    Debug.Log("It clicked " + beginNode.name);
-                    if (beginNode.CompareTag("Node"))
+                    Debug.Log("It clicked " + objectOver.name);
+                    if (objectOver.CompareTag("Node"))
                     {
+                        beginNode = this.objectOver;
                         beginNode.GetComponent<Node>().CreateTrans(beginNode.transform.position);
                         startedNewTrans = true;
+                    }
+                    else if (this.objectOver != null && this.objectOver.CompareTag("TransitionChange"))
+                    {
+                        this.objectOver.GetComponent<TypeTransition>().ChangeState();
                     }
                 }
                 else
@@ -111,11 +116,11 @@ public class DrawingScript : MonoBehaviour
             }
             else
             {
-                if (currentTrans != null) Debug.Log(this.currentTrans.name);
-                Debug.Log("mouse is Up !");
+                //if (currentTrans != null) Debug.Log(this.currentTrans.name);
+                //Debug.Log("mouse is Up !");
                 if (this.currentTrans != null)
                 {
-                    Debug.Log("MA TRANSITION EXIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIISTE");
+                    //Debug.Log("MA TRANSITION EXIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIISTE");
                     beginNode = null;
                     startedNewTrans = false;
                     if (this.objectOver == null)

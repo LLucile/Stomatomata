@@ -10,6 +10,7 @@ public class Transition : MonoBehaviour {
         NotRed,
         NotGreen,
         NotBlue,
+        Stomach,
         All
     };
     public GameObject endNode;
@@ -23,11 +24,17 @@ public class Transition : MonoBehaviour {
     void Start()
     {
         this.gameManager = GameObject.FindWithTag("GameManager").GetComponent<DrawingScript>();
-        Color tempcolor = this.transform.GetChild(0).GetComponent<SpriteRenderer>().color;
-        this.transform.GetChild(0).GetComponent<SpriteRenderer>().color = new Vector4(tempcolor[0], tempcolor[1], tempcolor[2], 1.0f);
     }
 
     public bool eat(string skewer) {
+        if (transitionType == tType.Stomach) 
+        {
+            if (skewer[skewer.Length - 1] == 'o')
+            {
+                return true;
+            }
+            return false;
+        }
         if (skewer[skewer.Length - 1] == 'r') {
             if (transitionType == tType.Green || transitionType == tType.Blue || transitionType == tType.NotRed) {
                 return false;

@@ -35,6 +35,15 @@ public class Node : MonoBehaviour {
     }
 
 
+    void OnDestroy()
+    {
+        for (int i = 0; i < transitions.Count; i++)
+        {
+            GameObject.Destroy(transitions[i]);
+        }
+    }
+
+
     void OnMouseExit()
     {
         this.onmouseOver = false;

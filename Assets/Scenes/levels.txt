@@ -1,0 +1,10 @@
+1
+orrrr
+xrrrb
+Ne contient que du rouge.
+
+2
+orbbr
+orrrr
+xbbbb
+Ne contient pas plus que 2 bleus.

@@ -1,12 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ManageGame : MonoBehaviour {
     static int currentLevel = 0;
+    Text rules;
     ParseLevels parser;
     void Start() {
         parser = GameObject.FindObjectOfType<ParseLevels>();
+        Text[] texts = GameObject.FindObjectsOfType<Text>();
+        for (int i = 0; i < texts.Length; ++i) {
+            if (texts[i].name == "Rules") {
+                rules = texts[i];
+                return;
+            }
+        }
     }
 
     public static void CleanupUnecessaryNode() {
@@ -65,15 +74,31 @@ public class ManageGame : MonoBehaviour {
         }
     }
 
+    public void GoToPreviousLevel() {
+        if (currentLevel > 0) {
+            parser.levelsGameObjects[currentLevel].SetActive(false);
+            --currentLevel;
+            parser.levelsGameObjects[currentLevel].SetActive(true);
+            rules.text = parser.levels[currentLevel].description;
+            ResetLevel();
+        } else {
+            Debug.Log("You are already at the first level");
+        }
+    }
+
     public void GoToNextLevel() {
         if (parser.levels.Count > currentLevel + 1) {
             parser.levelsGameObjects[currentLevel].SetActive(false);
             ++currentLevel;
             parser.levelsGameObjects[currentLevel].SetActive(true);
+            rules.text = parser.levels[currentLevel].description;
             ResetLevel();
-            Debug.Log("Level completed !");
         } else {
             Debug.Log("You reached the end");
         }
+    }
+
+    public void Quit() {
+        Application.Quit();
     }
 }

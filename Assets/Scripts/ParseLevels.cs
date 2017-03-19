@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using UnityEngine.UI;
 
 public class ParseLevels : MonoBehaviour {
     public struct LevelStruct {
@@ -43,8 +44,8 @@ public class ParseLevels : MonoBehaviour {
     public void createLevelGameObject(LevelStruct level) {
         GameObject obj = new GameObject();
         obj.name = level.levelNumber.ToString();
-        Vector3 pos = new Vector3(2.0f, 2.0f, .0f);
-        float step = 1.0f;
+        Vector3 pos = new Vector3(-7.0f, 5.0f, .0f);
+        Vector2 step = new Vector2(1.1f, 1.3f);
         for (int i = 0; i < level.skewerList.Count; ++i) {
             GameObject metaStick = new GameObject();
             metaStick.transform.SetParent(obj.transform);
@@ -53,7 +54,7 @@ public class ParseLevels : MonoBehaviour {
             stick.AddComponent<SpriteRenderer>();
             stick.name = "stick";
             stick.transform.SetParent(metaStick.transform);
-            stick.transform.localPosition = pos + new Vector3(step * ((level.skewerList[i].Length - 4.0f) / 2.0f), .0f, .0f);
+            stick.transform.localPosition = pos + new Vector3(step.x * ((level.skewerList[i].Length - 4.0f) / 2.0f), .0f, .0f);
             stick.transform.localScale = new Vector3(level.skewerList[i].Length, .5f, 1.0f);
             stick.GetComponent<SpriteRenderer>().sprite = pikPrefab;
             stick.GetComponent<SpriteRenderer>().sortingOrder = 4;
@@ -62,7 +63,7 @@ public class ParseLevels : MonoBehaviour {
             eatable.GetComponent<SpriteRenderer>().sortingOrder = 5;
             eatable.name = "isEatable";
             eatable.transform.SetParent(metaStick.transform);
-            eatable.transform.localPosition = pos - new Vector3(step, .0f, .0f);
+            eatable.transform.localPosition = pos - new Vector3(step.x, .0f, .0f);
             if (level.skewerList[i][0] == 'x') {
                 eatable.GetComponent<SpriteRenderer>().sprite = alienPrefab;
             } else {
@@ -82,14 +83,22 @@ public class ParseLevels : MonoBehaviour {
                 }
                 skewElem.transform.SetParent(metaStick.transform);
                 skewElem.transform.localPosition = pos;
-                pos.x += step;
+                pos.x += step.x;
             }
-            pos.y += step;
-            pos.x = 2.0f;
+            pos.y -= step.y;
+            pos.x = -7.0f;
         }
         levelsGameObjects.Insert(level.levelNumber - 1, obj);
         if (level.levelNumber != 1) {
             obj.SetActive(false);
+        } else {
+            Text[] texts = GameObject.FindObjectsOfType<Text>();
+            for (int i = 0; i < texts.Length; ++i) {
+                if (texts[i].name == "Rules") {
+                    texts[i].text = level.description;
+                    return;
+                }
+            }
         }
     }
     public void ReadLevels() {

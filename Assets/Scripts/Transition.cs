@@ -157,28 +157,40 @@ public class Transition : MonoBehaviour {
         {
             //Debug.Log("r");
             bulleStuff(bulle, pointeBulle, skewer);
-            if (transitionType == tType.Green || transitionType == tType.Blue || transitionType == tType.NotRed)
+            StartCoroutine("AnimationNulleCoroutine");
+            if (isAnimationOver)
             {
-                //Debug.Log("return");
-                return isResultWanted(skewer[0], false);
+                if (transitionType == tType.Green || transitionType == tType.Blue || transitionType == tType.NotRed)
+                {
+                    //Debug.Log("return");
+                    return isResultWanted(skewer[0], false);
+                }
             }
         }
         else if (skewer[skewer.Length - 1] == 'g')
         {
             //Debug.Log("g");
             bulleStuff(bulle, pointeBulle, skewer);
-            if (transitionType == tType.Red || transitionType == tType.Blue || transitionType == tType.NotGreen)
+            StartCoroutine("AnimationNulleCoroutine");
+            if (isAnimationOver)
             {
-                return isResultWanted(skewer[0], false);
+                if (transitionType == tType.Red || transitionType == tType.Blue || transitionType == tType.NotGreen)
+                {
+                    return isResultWanted(skewer[0], false);
+                }
             }
         }
         else if (skewer[skewer.Length - 1] == 'b')
         {
             //Debug.Log("b");
             bulleStuff(bulle, pointeBulle, skewer);
-            if (transitionType == tType.Red || transitionType == tType.Green || transitionType == tType.NotBlue)
+            StartCoroutine("AnimationNulleCoroutine");
+            if (isAnimationOver)
             {
-                return isResultWanted(skewer[0], false);
+                if (transitionType == tType.Red || transitionType == tType.Green || transitionType == tType.NotBlue)
+                {
+                    return isResultWanted(skewer[0], false);
+                }
             }
         }
         else
@@ -239,6 +251,7 @@ public class Transition : MonoBehaviour {
 
     IEnumerator AnimationNulleCoroutine()
     {
+        isAnimationOver = false;
         yield return new WaitForSeconds(animationTime);
         isAnimationOver = true;
     }

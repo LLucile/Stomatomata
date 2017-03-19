@@ -65,7 +65,7 @@ public class Transition : MonoBehaviour {
         return false;
     }
 
-    void bulleStuff(GameObject bulle, Transform pointeBulle, string skewer)
+   /* void bulleStuff(GameObject bulle, Transform pointeBulle, string skewer)
     {
         bulle.transform.position += endNode.transform.position - pointeBulle.position;
         Transform[] childs = bulle.GetComponentsInChildren<Transform>();
@@ -78,7 +78,7 @@ public class Transition : MonoBehaviour {
                 continue;
             }
         }
-    }
+    }*/
 
 
     private void SetBack(int yesno){
@@ -156,7 +156,7 @@ public class Transition : MonoBehaviour {
         if (skewer[skewer.Length - 1] == 'r')
         {
             //Debug.Log("r");
-            bulleStuff(bulle, pointeBulle, skewer);
+            //bulleStuff(bulle, pointeBulle, skewer);
             if (transitionType == tType.Green || transitionType == tType.Blue || transitionType == tType.NotRed)
             {
                 //Debug.Log("return");
@@ -166,7 +166,7 @@ public class Transition : MonoBehaviour {
         else if (skewer[skewer.Length - 1] == 'g')
         {
             //Debug.Log("g");
-            bulleStuff(bulle, pointeBulle, skewer);
+            //bulleStuff(bulle, pointeBulle, skewer);
             if (transitionType == tType.Red || transitionType == tType.Blue || transitionType == tType.NotGreen)
             {
                 return isResultWanted(skewer[0], false);
@@ -175,7 +175,7 @@ public class Transition : MonoBehaviour {
         else if (skewer[skewer.Length - 1] == 'b')
         {
             //Debug.Log("b");
-            bulleStuff(bulle, pointeBulle, skewer);
+            //bulleStuff(bulle, pointeBulle, skewer);
             if (transitionType == tType.Red || transitionType == tType.Green || transitionType == tType.NotBlue)
             {
                 return isResultWanted(skewer[0], false);
@@ -237,11 +237,11 @@ public class Transition : MonoBehaviour {
     }
 
 
-    IEnumerator AnimationNulleCoroutine()
+    /*IEnumerator AnimationNulleCoroutine()
     {
         isAnimationOver = false;
         yield return new WaitForSeconds(animationTime);
         isAnimationOver = true;
-    }
+    }*/
 
 }

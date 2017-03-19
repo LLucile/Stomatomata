@@ -67,7 +67,7 @@ public class Transition : MonoBehaviour {
         if (yesno == 1)
         {
             //Set NO background
-            Debug.Log("black back");
+           // Debug.Log("black back");
             tpanel.FindChild("Fond").FindChild("FondNon").gameObject.SetActive(true);
             tpanel.FindChild("Fond").FindChild("FondOui").gameObject.SetActive(false);
 
@@ -75,7 +75,7 @@ public class Transition : MonoBehaviour {
         else
         {
             //Set YES background
-            Debug.Log("white back");
+           // Debug.Log("white back");
             tpanel.FindChild("Fond").FindChild("FondOui").gameObject.SetActive(true);
             tpanel.FindChild("Fond").FindChild("FondNon").gameObject.SetActive(false);
 
@@ -86,27 +86,27 @@ public class Transition : MonoBehaviour {
         switch(iconType){
             case tType.Red : 
             case tType.NotRed:
-                Debug.Log("red icon");
+            //    Debug.Log("red icon");
                 tpanel.FindChild("Item").FindChild("Red").gameObject.SetActive(true);
                 tpanel.FindChild("Item").FindChild("Green").gameObject.SetActive(false);
                 tpanel.FindChild("Item").FindChild("Blue").gameObject.SetActive(false);
                 break;
             case tType.Green:
             case tType.NotGreen:
-                Debug.Log("green icon");
+            //    Debug.Log("green icon");
                 tpanel.FindChild("Item").FindChild("Red").gameObject.SetActive(false);
                 tpanel.FindChild("Item").FindChild("Green").gameObject.SetActive(true);
                 tpanel.FindChild("Item").FindChild("Blue").gameObject.SetActive(false);
                 break;
             case tType.Blue:
             case tType.NotBlue:
-                Debug.Log("blue icon");
+            //    Debug.Log("blue icon");
                 tpanel.FindChild("Item").FindChild("Red").gameObject.SetActive(false);
                 tpanel.FindChild("Item").FindChild("Green").gameObject.SetActive(false);
                 tpanel.FindChild("Item").FindChild("Blue").gameObject.SetActive(true);
                 break;
             default :
-                Debug.Log("no icon");
+            //    Debug.Log("no icon");
                 tpanel.FindChild("Item").FindChild("Red").gameObject.SetActive(false);
                 tpanel.FindChild("Item").FindChild("Green").gameObject.SetActive(false);
                 tpanel.FindChild("Item").FindChild("Blue").gameObject.SetActive(false);

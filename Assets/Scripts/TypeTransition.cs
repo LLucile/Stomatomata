@@ -21,7 +21,6 @@ public class TypeTransition : MonoBehaviour {
 
     public void ChangeState(int neg)
     {
-        Debug.Log("Y'a pas de code, mais j'ai capté qu'il faut changer de state !");
         //Change le type du parent
         if (neg == 0)
         {

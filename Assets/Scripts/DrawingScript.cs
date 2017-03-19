@@ -88,6 +88,10 @@ public class DrawingScript : MonoBehaviour
                 {
                     this.objectOver.GetComponent<TypeTransition>().ChangeState(0);
                 }
+                else if (objectOver.name == "FirstNode" || objectOver.name == "EstomacFinal")
+                {
+                    Debug.Log("You cannot destroy that !!!!!!!!!!!!!!!");
+                }
                 else
                 {
                     GameObject.Destroy(objectOver);
@@ -102,7 +106,7 @@ public class DrawingScript : MonoBehaviour
                 //Debug.Log("hey mouse is down !");
                 
                 //Debug.Log("it is over " + this.objectOver.name);
-                if (objectOver != null)
+                if (objectOver != null && objectOver.name != "EstomacFinal")
                 {
                     //Debug.Log("It clicked " + objectOver.name);
                     if (objectOver.CompareTag("Node"))

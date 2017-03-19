@@ -16,6 +16,7 @@ public class Transition : MonoBehaviour {
     public GameObject endNode;
     public GameObject startNode;
     public tType transitionType;
+    public float animationTime = 2.0f;
 
     private tType pTransitionType;
 
@@ -23,6 +24,7 @@ public class Transition : MonoBehaviour {
     public DrawingScript gameManager;
 
     private Transform tpanel;
+    private bool isAnimationOver = false;
 
 
     // Use this for initialization
@@ -62,6 +64,23 @@ public class Transition : MonoBehaviour {
             return true;
         return false;
     }
+
+    void bulleStuff(GameObject bulle, Transform pointeBulle, string skewer)
+    {
+        bulle.transform.position += endNode.transform.position - pointeBulle.position;
+        Transform[] childs = bulle.GetComponentsInChildren<Transform>();
+        for (int i = 0; i < childs.Length; ++i)
+        {
+            if (childs[i].name == (skewer.Length - 1).ToString())
+            {
+                Debug.Log("Destroy " + childs[i].name);
+                Destroy(childs[i].gameObject);
+                continue;
+            }
+        }
+        StartCoroutine(AnimationNulleCoroutine());
+    }
+
 
     private void SetBack(int yesno){
         if (yesno == 1)
@@ -114,29 +133,56 @@ public class Transition : MonoBehaviour {
         }
     }
 
-    public bool eat(string skewer) {
-        if (transitionType == tType.Stomach) {
+    public bool eat(string skewer)
+    {
+        GameObject bulle = GameObject.Find("bulle(Clone)");
+        Transform[] bulleChilds = bulle.GetComponentsInChildren<Transform>();
+        Transform pointeBulle = null;
+        Debug.Log("----------------EATING " + gameObject.name);
+        for (int i = 0; i < bulleChilds.Length; ++i)
+        {
+            if (bulleChilds[i].name == "Pointe")
+            {
+                pointeBulle = bulleChilds[i];
+                continue;
+            }
+        }
+        if (transitionType == tType.Stomach)
+        {
             return isResultWanted(skewer[skewer.Length - 1], true);
         }
         //Debug.Log("------------------");
         //Debug.Log(skewer);
-        if (skewer[skewer.Length - 1] == 'r') {
+        if (skewer[skewer.Length - 1] == 'r')
+        {
             //Debug.Log("r");
-            if (transitionType == tType.Green || transitionType == tType.Blue || transitionType == tType.NotRed) {
+            bulleStuff(bulle, pointeBulle, skewer);
+            if (transitionType == tType.Green || transitionType == tType.Blue || transitionType == tType.NotRed)
+            {
                 //Debug.Log("return");
                 return isResultWanted(skewer[0], false);
             }
-        } else if (skewer[skewer.Length - 1] == 'g') {
+        }
+        else if (skewer[skewer.Length - 1] == 'g')
+        {
             //Debug.Log("g");
-            if (transitionType == tType.Red || transitionType == tType.Blue || transitionType == tType.NotGreen) {
+            bulleStuff(bulle, pointeBulle, skewer);
+            if (transitionType == tType.Red || transitionType == tType.Blue || transitionType == tType.NotGreen)
+            {
                 return isResultWanted(skewer[0], false);
             }
-        } else if (skewer[skewer.Length - 1] == 'b') {
+        }
+        else if (skewer[skewer.Length - 1] == 'b')
+        {
             //Debug.Log("b");
-            if (transitionType == tType.Red || transitionType == tType.Green || transitionType == tType.NotBlue) {
+            bulleStuff(bulle, pointeBulle, skewer);
+            if (transitionType == tType.Red || transitionType == tType.Green || transitionType == tType.NotBlue)
+            {
                 return isResultWanted(skewer[0], false);
             }
-        } else {
+        }
+        else
+        {
             Debug.Log("stomach not found");
             return isResultWanted(skewer[0], false);
         }
@@ -145,10 +191,12 @@ public class Transition : MonoBehaviour {
         //Debug.Log(nextNode.name);
         //Debug.Log(skewer);
         //Debug.Log(nextNode.transitions.Count);
-        for (int i = 0; i < nextNode.transitions.Count; ++i) {
+        for (int i = 0; i < nextNode.transitions.Count; ++i)
+        {
             //Debug.Log(nextNode.transitions[i].name);
             //Debug.Log(skewer);
-            if (nextNode.transitions[i].GetComponent<Transition>().eat(skewer)) {
+            if (nextNode.transitions[i].GetComponent<Transition>().eat(skewer))
+            {
                 return true;
             }
         }
@@ -186,6 +234,13 @@ public class Transition : MonoBehaviour {
     public void StomachState()
     {
         transitionType = tType.Stomach;
+    }
+
+
+    IEnumerator AnimationNulleCoroutine()
+    {
+        yield return new WaitForSeconds(animationTime);
+        isAnimationOver = true;
     }
 
 }

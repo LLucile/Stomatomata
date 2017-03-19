@@ -39,25 +39,26 @@ public class Transition : MonoBehaviour {
 
     void Update()
     {
-        if (transitionType != pTransitionType || transitionKindName != ptransitionKindName)
+        if (transitionType != pTransitionType)
         {
             //CHANGER L'AFFICHAGE
                 //Find active child
             for (int i = 0; i < this.transform.childCount; ++i)
             {
-                if(transform.GetChild(i).gameObject.activeSelf) tpanel = transform.GetChild(i).FindChild("Panneau");
-                //Find its TypeTransitionObject
-                if (transitionType < tType.All)
-                {
-                    SetBack((int)transitionType % 2);
-                    SetIcon(transitionType);
-                }
-                else if (transitionType == tType.All)
-                {
-                    SetBack(0);
-                    SetIcon(tType.All);
-                }               
-            }                
+                if(transform.GetChild(i).gameObject.activeSelf) tpanel = transform.GetChild(i).FindChild("Panneau");        
+            }
+            Debug.Log(tpanel.name);
+            //Find its TypeTransitionObject
+            if (transitionType < tType.All)
+            {
+                SetBack((int)transitionType % 2);
+                SetIcon(transitionType);
+            }
+            else if (transitionType == tType.All)
+            {
+                SetBack(0);
+                SetIcon(tType.All);
+            }        
         }
         pTransitionType = transitionType;
         ptransitionKindName = transitionKindName;
@@ -210,7 +211,7 @@ public class Transition : MonoBehaviour {
 
     public void NextState()
     {
-        Debug.Log("Changing state from " + transitionType);
+        Debug.Log(" and is changing state from " + transitionType);
         transitionType+=2;
         if (transitionType > tType.All)
         {
@@ -233,6 +234,11 @@ public class Transition : MonoBehaviour {
                 transitionType--;
             }
         }
+    }
+
+    void OnDestroy()
+    {
+        startNode.GetComponent<Node>().transitions.Remove(this.gameObject);
     }
 
     public void StomachState()

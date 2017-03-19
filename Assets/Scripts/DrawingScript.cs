@@ -169,6 +169,7 @@ public class DrawingScript : MonoBehaviour
                                     {
                                         SetSprite(currentTrans, "stomach");
                                     }
+                                    currentTrans.GetComponentInChildren<TypeTransition>().ChangeState(-1);
                                 }
                                 //Debug.Log("endNode : " + this.endNode.name + " start Node : " + t.startNode);
                                 if (this.endNode != t.startNode)
@@ -289,7 +290,6 @@ public class DrawingScript : MonoBehaviour
             case "normalLong":
                 for (int i = 0; i < go.transform.childCount; ++i)
                 {
-                    go.GetComponent<TypeTransition>().ChangeState(-1);
                     if (go.transform.GetChild(i).gameObject.name == "BoyauLong")
                     {
                         go.transform.GetChild(i).gameObject.SetActive(true);
@@ -301,7 +301,6 @@ public class DrawingScript : MonoBehaviour
                 }
                 break;
             case "stomach":
-                go.GetComponent<TypeTransition>().ChangeState(-1);
                 for (int i = 0; i < go.transform.childCount; ++i)
                 {
                     if (go.transform.GetChild(i).gameObject.name == "BoyauFinal")

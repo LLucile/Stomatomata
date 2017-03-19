@@ -22,6 +22,8 @@ public class Transition : MonoBehaviour {
     private bool onmouseOver = false;
     public DrawingScript gameManager;
 
+    private Transform tpanel;
+
 
     // Use this for initialization
     void Start()
@@ -38,10 +40,18 @@ public class Transition : MonoBehaviour {
                 //Find active child
             for (int i = 0; i < this.transform.childCount; ++i)
             {
+                if(transform.GetChild(i).gameObject.activeSelf) tpanel = transform.GetChild(i).FindChild("Panneau");
                 //Find its TypeTransitionObject
-                //Change its sprite
-                //if %2 == 0 yes
-                // else no
+                if (transitionType < tType.All)
+                {
+                    SetBack((int)transitionType % 2);
+                    SetIcon((int)transitionType % 3);
+                }
+                else if (transitionType == tType.All)
+                {
+                    SetBack(0);
+                    SetIcon(-1);
+                }               
             }                
         }
         pTransitionType = transitionType;
@@ -51,6 +61,48 @@ public class Transition : MonoBehaviour {
         if ((first == 'o' && result) || (first == 'x' && !result))
             return true;
         return false;
+    }
+
+    private void SetBack(int yesno){
+        if (yesno == 1)
+        {
+            //Set NO background
+            tpanel.FindChild("Fond").FindChild("FondNon").gameObject.SetActive(true);
+            tpanel.FindChild("Fond").FindChild("FondOui").gameObject.SetActive(false);
+
+        }
+        else
+        {
+            //Set YES background
+            tpanel.FindChild("Fond").FindChild("FondOui").gameObject.SetActive(true);
+            tpanel.FindChild("Fond").FindChild("FondNon").gameObject.SetActive(false);
+
+        }
+    }
+
+    private void SetIcon(int iconNum){
+        switch(iconNum){
+            case 0:
+                tpanel.FindChild("Item").FindChild("Red").gameObject.SetActive(true);
+                tpanel.FindChild("Item").FindChild("Green").gameObject.SetActive(false);
+                tpanel.FindChild("Item").FindChild("Blue").gameObject.SetActive(false);
+                break;
+            case 1 :
+                tpanel.FindChild("Item").FindChild("Red").gameObject.SetActive(false);
+                tpanel.FindChild("Item").FindChild("Green").gameObject.SetActive(true);
+                tpanel.FindChild("Item").FindChild("Blue").gameObject.SetActive(false);
+                break;
+            case 2 :
+                tpanel.FindChild("Item").FindChild("Red").gameObject.SetActive(false);
+                tpanel.FindChild("Item").FindChild("Green").gameObject.SetActive(false);
+                tpanel.FindChild("Item").FindChild("Blue").gameObject.SetActive(true);
+                break;
+            default :
+                tpanel.FindChild("Item").FindChild("Red").gameObject.SetActive(false);
+                tpanel.FindChild("Item").FindChild("Green").gameObject.SetActive(false);
+                tpanel.FindChild("Item").FindChild("Blue").gameObject.SetActive(false);
+                break;
+        }
     }
 
     public bool eat(string skewer) {

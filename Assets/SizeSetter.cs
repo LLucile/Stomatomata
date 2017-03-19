@@ -10,6 +10,7 @@ public class SizeSetter : MonoBehaviour {
 
     public void SetSize()
     {
+        ManageGame.CleanupUnecessaryNode();
         if (zoomed)
         {
             Camera.main.orthographicSize = cameraSizeZoomed;

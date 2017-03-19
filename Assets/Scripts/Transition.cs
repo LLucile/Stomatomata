@@ -45,12 +45,12 @@ public class Transition : MonoBehaviour {
                 if (transitionType < tType.All)
                 {
                     SetBack((int)transitionType % 2);
-                    SetIcon((int)transitionType % 3);
+                    SetIcon(transitionType);
                 }
                 else if (transitionType == tType.All)
                 {
                     SetBack(0);
-                    SetIcon(-1);
+                    SetIcon(tType.All);
                 }               
             }                
         }
@@ -67,6 +67,7 @@ public class Transition : MonoBehaviour {
         if (yesno == 1)
         {
             //Set NO background
+            Debug.Log("black back");
             tpanel.FindChild("Fond").FindChild("FondNon").gameObject.SetActive(true);
             tpanel.FindChild("Fond").FindChild("FondOui").gameObject.SetActive(false);
 
@@ -74,30 +75,38 @@ public class Transition : MonoBehaviour {
         else
         {
             //Set YES background
+            Debug.Log("white back");
             tpanel.FindChild("Fond").FindChild("FondOui").gameObject.SetActive(true);
             tpanel.FindChild("Fond").FindChild("FondNon").gameObject.SetActive(false);
 
         }
     }
 
-    private void SetIcon(int iconNum){
-        switch(iconNum){
-            case 0:
+    private void SetIcon(tType iconType){
+        switch(iconType){
+            case tType.Red : 
+            case tType.NotRed:
+                Debug.Log("red icon");
                 tpanel.FindChild("Item").FindChild("Red").gameObject.SetActive(true);
                 tpanel.FindChild("Item").FindChild("Green").gameObject.SetActive(false);
                 tpanel.FindChild("Item").FindChild("Blue").gameObject.SetActive(false);
                 break;
-            case 1 :
+            case tType.Green:
+            case tType.NotGreen:
+                Debug.Log("green icon");
                 tpanel.FindChild("Item").FindChild("Red").gameObject.SetActive(false);
                 tpanel.FindChild("Item").FindChild("Green").gameObject.SetActive(true);
                 tpanel.FindChild("Item").FindChild("Blue").gameObject.SetActive(false);
                 break;
-            case 2 :
+            case tType.Blue:
+            case tType.NotBlue:
+                Debug.Log("blue icon");
                 tpanel.FindChild("Item").FindChild("Red").gameObject.SetActive(false);
                 tpanel.FindChild("Item").FindChild("Green").gameObject.SetActive(false);
                 tpanel.FindChild("Item").FindChild("Blue").gameObject.SetActive(true);
                 break;
             default :
+                Debug.Log("no icon");
                 tpanel.FindChild("Item").FindChild("Red").gameObject.SetActive(false);
                 tpanel.FindChild("Item").FindChild("Green").gameObject.SetActive(false);
                 tpanel.FindChild("Item").FindChild("Blue").gameObject.SetActive(false);
@@ -154,7 +163,7 @@ public class Transition : MonoBehaviour {
         if (transitionType > tType.All)
         {
             if ((int)transitionType % 2 == 0) transitionType = 0;
-            else transitionType = tType.Red;
+            else transitionType = tType.NotRed;
         }
         Debug.Log(" to " + transitionType);
     }

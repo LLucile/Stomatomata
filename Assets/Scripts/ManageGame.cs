@@ -4,9 +4,25 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class ManageGame : MonoBehaviour {
+
+    public GameObject panel;
     static int currentLevel = 0;
+
+    private int pLevel = 0;
+
+    public Text greet;
+    public Text levelOver;
+    public Text brochetteFailedOrPassed;
+
     Text rules;
     ParseLevels parser;
+
+    private float timerLevelDisplay = 180;
+    private bool displayLevel = false;
+
+    private float timerResultDisplay = 180;
+    private bool resultDisplay = false;
+
     //public GameObject BullePrefab;
     void Start() {
         parser = GameObject.FindObjectOfType<ParseLevels>();
@@ -17,6 +33,52 @@ public class ManageGame : MonoBehaviour {
                 return;
             }
         }
+    }
+
+    void Update()
+    {
+        if (resultDisplay)
+        {
+            timerResultDisplay--;
+            if (timerResultDisplay < 0)
+            {
+                timerResultDisplay = 180;
+                resultDisplay = false;
+                brochetteFailedOrPassed.gameObject.SetActive(false);
+                brochetteFailedOrPassed.transform.parent.gameObject.SetActive(false);
+            }
+        }
+        if (currentLevel != pLevel){
+            displayLevel = true;
+        }
+        if(displayLevel)
+        {
+            if(!greet.gameObject.activeSelf) greet.gameObject.SetActive(true);
+            greet.text = "Level " + currentLevel;
+            timerLevelDisplay--;
+        }
+        if (timerLevelDisplay < 0)
+        {
+            displayLevel = false;
+            greet.gameObject.SetActive(false);
+            timerLevelDisplay = 180;
+        }
+
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (!panel.activeSelf)
+            {
+                Time.timeScale = 0.000001f;
+                panel.SetActive(true);
+            }
+            else
+            {
+                Time.timeScale = 1;
+                panel.SetActive(false);
+            }
+        }
+        pLevel = currentLevel;
     }
 
     public static void CleanupUnecessaryNode() {
@@ -51,6 +113,10 @@ public class ManageGame : MonoBehaviour {
                 }
             }
             if (!isSkewDone) {
+                brochetteFailedOrPassed.gameObject.SetActive(true);
+                brochetteFailedOrPassed.transform.parent.gameObject.SetActive(true);
+                brochetteFailedOrPassed.text += " \n Brochette " + i + " failed the test";
+                resultDisplay = true;
                 Debug.Log("Level failed");
                 //Destroy(bulle);
                 return;

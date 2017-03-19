@@ -18,6 +18,9 @@ public class Transition : MonoBehaviour {
     public tType transitionType;
     public float animationTime = 2.0f;
 
+    public string transitionKindName ="";
+    private string ptransitionKindName;
+
     private tType pTransitionType;
 
     private bool onmouseOver = false;
@@ -36,7 +39,7 @@ public class Transition : MonoBehaviour {
 
     void Update()
     {
-        if (transitionType != pTransitionType)
+        if (transitionType != pTransitionType || transitionKindName != ptransitionKindName)
         {
             //CHANGER L'AFFICHAGE
                 //Find active child
@@ -57,6 +60,7 @@ public class Transition : MonoBehaviour {
             }                
         }
         pTransitionType = transitionType;
+        ptransitionKindName = transitionKindName;
     }
 
     bool isResultWanted(char first, bool result) {
@@ -135,18 +139,18 @@ public class Transition : MonoBehaviour {
 
     public bool eat(string skewer)
     {
-        GameObject bulle = GameObject.Find("bulle(Clone)");
-        Transform[] bulleChilds = bulle.GetComponentsInChildren<Transform>();
-        Transform pointeBulle = null;
+        //GameObject bulle = GameObject.Find("bulle(Clone)");
+        //Transform[] bulleChilds = bulle.GetComponentsInChildren<Transform>();
+        //Transform pointeBulle = null;
         Debug.Log("----------------EATING " + gameObject.name);
-        for (int i = 0; i < bulleChilds.Length; ++i)
+        /*for (int i = 0; i < bulleChilds.Length; ++i)
         {
             if (bulleChilds[i].name == "Pointe")
             {
                 pointeBulle = bulleChilds[i];
                 continue;
             }
-        }
+        }*/
         if (transitionType == tType.Stomach)
         {
             return isResultWanted(skewer[skewer.Length - 1], true);

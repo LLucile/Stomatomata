@@ -168,11 +168,13 @@ public class DrawingScript : MonoBehaviour
                                     if (longSprite)
                                     {
                                         SetSprite(currentTrans, "stomachLong");
+                                        currentTrans.GetComponent<Transition>().transitionKindName = "stomachLong";
                                         currentTrans.transform.localScale = new Vector3(dist / 4, (currentTrans.transform.localScale.y / Mathf.Abs(currentTrans.transform.localScale.y)) * dist / 4, currentTrans.transform.localScale.z); //snap (middle of node)
                                     }
                                     else
                                     {
                                         SetSprite(currentTrans, "stomach");
+                                        currentTrans.GetComponent<Transition>().transitionKindName = "stomach";
                                     }
                                     currentTrans.GetComponentInChildren<TypeTransition>().ChangeState(-1);
                                 }
@@ -251,6 +253,7 @@ public class DrawingScript : MonoBehaviour
                     // TO DO : here we will need to add the sprite change for scale changes
                     SetSprite(currentTrans, "normalLong");
                     currentTrans.transform.localScale = new Vector3(mouseDistance / 4, (currentTrans.transform.localScale.y / Mathf.Abs(currentTrans.transform.localScale.y)) * mouseDistance / 4, currentTrans.transform.localScale.z);
+                    currentTrans.GetComponent<Transition>().transitionKindName = "normalLong";
                     longSprite = true;
                 }
                 else
@@ -258,6 +261,7 @@ public class DrawingScript : MonoBehaviour
                     // TO DO : here we will need to add the sprite change for scale changes
                     //Debug.Log("HI NORMAL SPRITE !");
                     SetSprite(currentTrans, "normal");
+                    currentTrans.GetComponent<Transition>().transitionKindName = "normal";
                     currentTrans.transform.localScale = new Vector3(mouseDistance / 2, (currentTrans.transform.localScale.y / Mathf.Abs(currentTrans.transform.localScale.y)) * mouseDistance / 2, currentTrans.transform.localScale.z);
                     longSprite = false;
                 }
@@ -266,6 +270,7 @@ public class DrawingScript : MonoBehaviour
             {
                 //TO DO : here use self-node transition sprite
                 SetSprite(currentTrans, "selfLoop");
+                currentTrans.GetComponent<Transition>().transitionKindName = "selfLoop";
                 longSprite = false;
             }
         }

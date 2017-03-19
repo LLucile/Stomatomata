@@ -13,7 +13,12 @@ public class ParseLevels : MonoBehaviour {
     public List<LevelStruct> levels;
     [HideInInspector]
     public List<GameObject> levelsGameObjects;
-    public GameObject skewerPrefab;
+    public Sprite redPrefab;
+    public Sprite bluePrefab;
+    public Sprite greenPrefab;
+    public Sprite humanPrefab;
+    public Sprite alienPrefab;
+    public Sprite pikPrefab;
     void Start() {
         levels = new List<LevelStruct>();
         levelsGameObjects = new List<GameObject>();
@@ -39,36 +44,41 @@ public class ParseLevels : MonoBehaviour {
         GameObject obj = new GameObject();
         obj.name = level.levelNumber.ToString();
         Vector3 pos = new Vector3(2.0f, 2.0f, .0f);
-        float step = .8f;
+        float step = 1.0f;
         for (int i = 0; i < level.skewerList.Count; ++i) {
             GameObject metaStick = new GameObject();
             metaStick.transform.SetParent(obj.transform);
             metaStick.name = "metaStick";
-            GameObject stick = Instantiate(skewerPrefab);
+            GameObject stick = new GameObject();
+            stick.AddComponent<SpriteRenderer>();
             stick.name = "stick";
             stick.transform.SetParent(metaStick.transform);
             stick.transform.localPosition = pos + new Vector3(step * ((level.skewerList[i].Length - 4.0f) / 2.0f), .0f, .0f);
-            stick.transform.localScale = new Vector3(level.skewerList[i].Length + 2.0f, .5f, 1.0f);
-            stick.GetComponent<SpriteRenderer>().color = Color.black;
+            stick.transform.localScale = new Vector3(level.skewerList[i].Length, .5f, 1.0f);
+            stick.GetComponent<SpriteRenderer>().sprite = pikPrefab;
             stick.GetComponent<SpriteRenderer>().sortingOrder = 4;
-            GameObject eatable = Instantiate(skewerPrefab);
+            GameObject eatable = new GameObject();
+            eatable.AddComponent<SpriteRenderer>();
+            eatable.GetComponent<SpriteRenderer>().sortingOrder = 5;
             eatable.name = "isEatable";
             eatable.transform.SetParent(metaStick.transform);
             eatable.transform.localPosition = pos - new Vector3(step, .0f, .0f);
             if (level.skewerList[i][0] == 'x') {
-                eatable.GetComponent<SpriteRenderer>().color = Color.magenta;
+                eatable.GetComponent<SpriteRenderer>().sprite = alienPrefab;
             } else {
-                eatable.GetComponent<SpriteRenderer>().color = Color.white;
+                eatable.GetComponent<SpriteRenderer>().sprite = humanPrefab;
             }
             for (int j = 1; j < level.skewerList[i].Length; ++j) {
-                GameObject skewElem = Instantiate(skewerPrefab);
+                GameObject skewElem = new GameObject();
+                skewElem.AddComponent<SpriteRenderer>();
+                skewElem.GetComponent<SpriteRenderer>().sortingOrder = 5;
                 skewElem.name = "nomnomnom";
                 if (level.skewerList[i][j] == 'r') {
-                    skewElem.GetComponent<SpriteRenderer>().color = Color.red;
+                    skewElem.GetComponent<SpriteRenderer>().sprite = redPrefab;
                 } else if (level.skewerList[i][j] == 'g') {
-                    skewElem.GetComponent<SpriteRenderer>().color = Color.green;
+                    skewElem.GetComponent<SpriteRenderer>().sprite = greenPrefab;
                 } else {
-                    skewElem.GetComponent<SpriteRenderer>().color = Color.blue;
+                    skewElem.GetComponent<SpriteRenderer>().sprite = bluePrefab;
                 }
                 skewElem.transform.SetParent(metaStick.transform);
                 skewElem.transform.localPosition = pos;

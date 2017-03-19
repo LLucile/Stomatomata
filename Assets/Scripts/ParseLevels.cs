@@ -11,6 +11,7 @@ public class ParseLevels : MonoBehaviour {
     }
     [HideInInspector]
     public List<LevelStruct> levels;
+    [HideInInspector]
     public List<GameObject> levelsGameObjects;
     public GameObject skewerPrefab;
     void Start() {
@@ -26,6 +27,7 @@ public class ParseLevels : MonoBehaviour {
             Debug.Log(lvl.description);
         }*/
     }
+
     public LevelStruct getLevel(int levelNb) {
         if (levels.Count > levelNb) {
             return levels[levelNb];

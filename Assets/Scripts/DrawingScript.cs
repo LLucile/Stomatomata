@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class DrawingScript : MonoBehaviour
 {
-
     public GameObject objectOver;
     public GameObject currentTrans;
     public GameObject nodePrefab;
+    public GameObject bouclePrefab;
 
     public float drawingCanvasMinX = -5f;
     public float drawingCanvasMaxX = 5f;
@@ -76,7 +76,7 @@ public class DrawingScript : MonoBehaviour
         }
         if (previousmouseRightDown != mouseRightDown)
         {
-            Debug.Log("HERE IS A RIGHT CLICK !!!!!!!!!!!!!!!!!!");
+            //Debug.Log("HERE IS A RIGHT CLICK !!!!!!!!!!!!!!!!!!");
             if (mouseRightDown)
             {
                 GameObject.Destroy(objectOver);
@@ -87,12 +87,12 @@ public class DrawingScript : MonoBehaviour
             //Debug.Log(mouseDown);
             if (mouseDown == true)
             {
-                Debug.Log("hey mouse is down !");
+                //Debug.Log("hey mouse is down !");
                 
                 //Debug.Log("it is over " + this.objectOver.name);
                 if (objectOver != null)
                 {
-                    Debug.Log("It clicked " + objectOver.name);
+                    //Debug.Log("It clicked " + objectOver.name);
                     if (objectOver.CompareTag("Node"))
                     {
                         beginNode = this.objectOver;
@@ -106,7 +106,7 @@ public class DrawingScript : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("Instantiating new Node");
+                    //Debug.Log("Instantiating new Node");
                     //Activate new Node script and collider
                     newNode = false;
                     if (myNewNode != null)
@@ -119,16 +119,53 @@ public class DrawingScript : MonoBehaviour
             }
             else
             {
-                //if (currentTrans != null) Debug.Log(this.currentTrans.name);
                 //Debug.Log("mouse is Up !");
                 if (this.currentTrans != null)
                 {
-                    //Debug.Log("MA TRANSITION EXIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIISTE");
                     beginNode = null;
                     startedNewTrans = false;
-                    if (this.objectOver == null)
+
+                    Vector3 mousePos = Input.mousePosition;
+                    mousePos.z = 5f;
+
+                    Vector2 v = Camera.main.ScreenToWorldPoint(mousePos);
+
+                    Collider2D[] col = Physics2D.OverlapPointAll(v); //use raycast to drop collisions with transitions
+
+                    bool done = false;
+                    if (col.Length > 0)
                     {
-                            Debug.Log("Sorry but this is not a valid end object");
+                        foreach (Collider2D c in col)
+                        {
+                            Debug.Log(c.gameObject.name);
+                            if (c.gameObject.CompareTag("Node")) {
+                                this.endNode = c.gameObject;
+                                Transition t = currentTrans.GetComponent<Transition>();
+                                t.endNode = this.endNode;
+                                float dist = Vector3.Distance(t.startNode.transform.position, t.endNode.transform.position);
+                                currentTrans.transform.localScale = new Vector3(dist / 2, dist / 2, currentTrans.transform.localScale.z); //snap (middle of node)
+                                if (c.gameObject == t.startNode) {
+                                    GameObject boucleTrans = Instantiate(bouclePrefab);
+                                    boucleTrans.GetComponent<Transition>().startNode = this.endNode;
+                                    boucleTrans.GetComponent<Transition>().endNode = this.endNode;
+                                    this.currentTrans.GetComponent<Transition>().startNode.GetComponent<Node>().transitions.Remove(this.currentTrans);
+                                    Destroy(this.currentTrans);
+                                    this.currentTrans = boucleTrans;
+                                    boucleTrans.GetComponent<Transition>().startNode.GetComponent<Node>().transitions.Add(this.currentTrans);
+                                    boucleTrans.transform.position = endNode.transform.position + new Vector3(.0f, 1.0f, .0f);
+                                }
+                                done = true;
+                            }
+                        }
+                    }
+                    if (!done)
+                    {
+                        this.currentTrans.GetComponent<Transition>().startNode.GetComponent<Node>().transitions.Remove(this.currentTrans);
+                        Destroy(this.currentTrans);
+                    }
+                    /*if (this.objectOver == null || !this.objectOver.CompareTag("Node"))
+                    {
+                            Debug.Log("Sorry but this is not a valid end object !!! Collider transitions :C");
                             this.currentTrans.GetComponent<Transition>().startNode.GetComponent<Node>().transitions.Remove(this.currentTrans);
                             Destroy(this.currentTrans);
                     }
@@ -137,7 +174,7 @@ public class DrawingScript : MonoBehaviour
                         //TODO snap on the edge of gameObject instead as anywhere
                         this.endNode = this.objectOver;
                         this.currentTrans.GetComponent<Transition>().endNode = this.endNode;
-                    }
+                    }*/
                 }
             }
         }

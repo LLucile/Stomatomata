@@ -26,49 +26,65 @@ public class Transition : MonoBehaviour {
         this.gameManager = GameObject.FindWithTag("GameManager").GetComponent<DrawingScript>();
     }
 
+    bool isResultWanted(char first, bool result) {
+        if ((first == 'o' && result) || (first == 'x' && !result))
+            return true;
+        return false;
+    }
+
     public bool eat(string skewer) {
-        if (transitionType == tType.Stomach) 
-        {
-            if (skewer[skewer.Length - 1] == 'o')
-            {
-                return true;
-            }
-            return false;
+        if (transitionType == tType.Stomach) {
+            return isResultWanted(skewer[skewer.Length - 1], true);
         }
+        //Debug.Log("------------------");
+        //Debug.Log(skewer);
         if (skewer[skewer.Length - 1] == 'r') {
+            //Debug.Log("r");
             if (transitionType == tType.Green || transitionType == tType.Blue || transitionType == tType.NotRed) {
-                return false;
+                //Debug.Log("return");
+                return isResultWanted(skewer[0], false);
             }
         } else if (skewer[skewer.Length - 1] == 'g') {
+            //Debug.Log("g");
             if (transitionType == tType.Red || transitionType == tType.Blue || transitionType == tType.NotGreen) {
-                return false;
+                return isResultWanted(skewer[0], false);
+            }
+        } else if (skewer[skewer.Length - 1] == 'b') {
+            //Debug.Log("b");
+            if (transitionType == tType.Red || transitionType == tType.Green || transitionType == tType.NotBlue) {
+                return isResultWanted(skewer[0], false);
             }
         } else {
-            if (transitionType == tType.Red || transitionType == tType.Green || transitionType == tType.NotBlue) {
-                return false;
-            }
+            Debug.Log("stomach not found");
+            return isResultWanted(skewer[0], false);
         }
         Node nextNode = endNode.GetComponent<Node>();
-        skewer = skewer.Substring(0, skewer.Length - 2);
+        skewer = skewer.Substring(0, skewer.Length - 1);
+        //Debug.Log(nextNode.name);
+        //Debug.Log(skewer);
+        //Debug.Log(nextNode.transitions.Count);
         for (int i = 0; i < nextNode.transitions.Count; ++i) {
+            //Debug.Log(nextNode.transitions[i].name);
+            //Debug.Log(skewer);
             if (nextNode.transitions[i].GetComponent<Transition>().eat(skewer)) {
                 return true;
             }
         }
-        return false;
+        Debug.Log("non specified, indigestion");
+        return isResultWanted(skewer[0], false);
     }
 
     void OnMouseExit()
     {
         this.onmouseOver = false;
         gameManager.objectOver = null;
-        Debug.Log("you're leaving " + this.gameObject.name);
+        //Debug.Log("you're leaving " + this.gameObject.name);
     }
 
     void OnMouseEnter()
     {
         this.onmouseOver = true;
         gameManager.objectOver = this.gameObject;
-        Debug.Log("you're over " + this.gameObject.name);
+        //Debug.Log("you're over " + this.gameObject.name);
     }
 }

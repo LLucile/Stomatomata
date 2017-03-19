@@ -20,13 +20,13 @@ public class LogMyParent : MonoBehaviour {
         {
             gameManager.objectOver = null;
         }
-        //Debug.Log("you're leaving " + this.gameObject.name);
+        Debug.Log("you're leaving " + this.transform.parent.gameObject.name);
     }
 
     void OnMouseEnter()
     {
         this.onmouseOver = true;
         gameManager.objectOver = this.transform.parent.gameObject;
-        //Debug.Log("you're over " + this.gameObject.name);
+        Debug.Log("you're over " + this.transform.parent.gameObject.name);
     }
 }

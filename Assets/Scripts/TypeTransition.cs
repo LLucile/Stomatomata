@@ -19,26 +19,35 @@ public class TypeTransition : MonoBehaviour {
 		
 	}
 
-    public void ChangeState()
+    public void ChangeState(int neg)
     {
         Debug.Log("Y'a pas de code, mais j'ai capté qu'il faut changer de state !");
         //Change le type du parent
+        if (neg == 0)
+        {
+            this.transform.parent.GetComponentInParent<Transition>().NegState();
+        }
+        else if(neg > 0)
+        {
+            this.transform.parent.GetComponentInParent<Transition>().NextState();
+        }
+        else if (neg == -1)
+        {
 
-        //Change le panneau du fils
-
+        }
     }
 
     void OnMouseEnter()
     {
         this.onmouseOver = true;
         gameManager.objectOver = this.gameObject;
-        Debug.Log("you're over " + this.gameObject.name);
+        //Debug.Log("you're over " + this.gameObject.name);
     }
 
     void OnMouseExit()
     {
         this.onmouseOver = false;
         gameManager.objectOver = null;
-        Debug.Log("you're leaving " + this.gameObject.name);
+        //Debug.Log("you're leaving " + this.gameObject.name);
     }
 }

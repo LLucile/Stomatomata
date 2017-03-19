@@ -48,14 +48,12 @@ public class Node : MonoBehaviour {
     {
         this.onmouseOver = false;
         gameManager.objectOver = null;
-        Debug.Log("you're leaving " + this.gameObject.name);
     }
 
     void OnMouseEnter()
     {
         this.onmouseOver = true;
         gameManager.objectOver = this.gameObject;
-        Debug.Log("you're over " + this.gameObject.name);
     }
 
 

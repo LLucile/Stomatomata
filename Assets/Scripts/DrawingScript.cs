@@ -80,10 +80,17 @@ public class DrawingScript : MonoBehaviour
         }
         if (previousmouseRightDown != mouseRightDown)
         {
-            Debug.Log("HERE IS A RIGHT CLICK !!!!!!!!!!!!!!!!!!");
+            //Debug.Log("HERE IS A RIGHT CLICK !!!!!!!!!!!!!!!!!!");
             if (mouseRightDown)
             {
-                if(objectOver.name != "TypeTransition") GameObject.Destroy(objectOver);
+                if (objectOver.CompareTag("TransitionChange"))
+                {
+                    this.objectOver.GetComponent<TypeTransition>().ChangeState(0);
+                }
+                else
+                {
+                    GameObject.Destroy(objectOver);
+                }
             }
         }
         if (previousmouseDown != mouseDown)
@@ -105,7 +112,8 @@ public class DrawingScript : MonoBehaviour
                     }
                     else if (this.objectOver != null && this.objectOver.CompareTag("TransitionChange"))
                     {
-                        this.objectOver.GetComponent<TypeTransition>().ChangeState();
+                        Debug.Log("HEY ! Let's change transition state !");
+                        this.objectOver.GetComponent<TypeTransition>().ChangeState(1);
                     }
                 }
                 else
@@ -141,7 +149,7 @@ public class DrawingScript : MonoBehaviour
                     {
                         foreach (Collider2D c in col)
                         {
-                            Debug.Log(c.gameObject.name);
+                            //Debug.Log(c.gameObject.name);
                             if (c.gameObject.CompareTag("Node")) {
                                 this.endNode = c.gameObject;
                                 Transition t = currentTrans.GetComponent<Transition>();
@@ -150,7 +158,7 @@ public class DrawingScript : MonoBehaviour
                                 //change sprite for stomach sprite if endNode == "EstomacFinal"
                                 if (endNode.name == "EstomacFinal")
                                 {
-                                    Debug.Log("Snapping on Stomach !!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                                    //Debug.Log("Snapping on Stomach !!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                                     currentTrans.transform.localScale = new Vector3(dist / 2, (currentTrans.transform.localScale.y / Mathf.Abs(currentTrans.transform.localScale.y)) * dist / 2, currentTrans.transform.localScale.z); //snap (middle of node)
                                     if (longSprite)
                                     {
@@ -217,7 +225,7 @@ public class DrawingScript : MonoBehaviour
         if (mouseDown && startedNewTrans)
         {
             currentMousePosDelta = mousePosition - beginNode.transform.position;
-            Debug.Log("mouse distance = " + mouseDistance);
+            //Debug.Log("mouse distance = " + mouseDistance);
             //lets compute angle
             currentTrans.transform.localEulerAngles = new Vector3(0, 0, Mathf.Atan2((mousePosition.y - beginNode.transform.position.y), (mousePosition.x - beginNode.transform.position.x)) * Mathf.Rad2Deg);
             angle = currentTrans.transform.localEulerAngles.z;
@@ -227,7 +235,7 @@ public class DrawingScript : MonoBehaviour
             //Debug.Log("hey check that nice distance mouse has ! Distance = " + mouseDistance);
             if (angle > 90 && angle < 270 || angle < -90 && angle > -270)
             {
-                Debug.Log("Inversing sprite");
+                //Debug.Log("Inversing sprite");
                 currentTrans.transform.localScale = new Vector3(currentTrans.transform.localScale.x, -1 * Mathf.Abs(currentTrans.transform.localScale.y), currentTrans.transform.localScale.z);
             }
             if (mouseDistance > mouseDistanceMin)
@@ -242,7 +250,7 @@ public class DrawingScript : MonoBehaviour
                 else
                 {
                     // TO DO : here we will need to add the sprite change for scale changes
-                    Debug.Log("HI NORMAL SPRITE !");
+                    //Debug.Log("HI NORMAL SPRITE !");
                     SetSprite(currentTrans, "normal");
                     currentTrans.transform.localScale = new Vector3(mouseDistance / 2, (currentTrans.transform.localScale.y / Mathf.Abs(currentTrans.transform.localScale.y)) * mouseDistance / 2, currentTrans.transform.localScale.z);
                     longSprite = false;
@@ -263,30 +271,86 @@ public class DrawingScript : MonoBehaviour
 
     void SetSprite(GameObject go, string spriteType)
     {
-        for (int i = 0; i < go.transform.childCount; ++i)
-        {
-            go.transform.GetChild(i).gameObject.SetActive(false);
-        }
         switch (spriteType)
         {
             case "normal" :
-                go.transform.FindChild("Boyau").gameObject.SetActive(true);
+                for (int i = 0; i < go.transform.childCount; ++i)
+                {
+                    if (go.transform.GetChild(i).gameObject.name == "Boyau")
+                    {
+                        go.transform.GetChild(i).gameObject.SetActive(true);
+                    }
+                    else
+                    {
+                        go.transform.GetChild(i).gameObject.SetActive(false);
+                    }
+                }
                 break;
             case "normalLong":
-                go.transform.FindChild("BoyauLong").gameObject.SetActive(true);
+                for (int i = 0; i < go.transform.childCount; ++i)
+                {
+                    if (go.transform.GetChild(i).gameObject.name == "BoyauLong")
+                    {
+                        go.transform.GetChild(i).gameObject.SetActive(true);
+                    }
+                    else
+                    {
+                        go.transform.GetChild(i).gameObject.SetActive(false);
+                    }
+                }
                 break;
             case "stomach":
-                go.transform.FindChild("BoyauFinal").gameObject.SetActive(true);
+                for (int i = 0; i < go.transform.childCount; ++i)
+                {
+                    if (go.transform.GetChild(i).gameObject.name == "BoyauFinal")
+                    {
+                        go.transform.GetChild(i).gameObject.SetActive(true);
+                    }
+                    else
+                    {
+                        go.transform.GetChild(i).gameObject.SetActive(false);
+                    }
+                }
                 break;
             case "stomachLong":
-                go.transform.FindChild("BoyauFinalLong").gameObject.SetActive(true);
+                for (int i = 0; i < go.transform.childCount; ++i)
+                {
+                    if (go.transform.GetChild(i).gameObject.name == "BoyauFinalLong")
+                    {
+                        go.transform.GetChild(i).gameObject.SetActive(true);
+                    }
+                    else
+                    {
+                        go.transform.GetChild(i).gameObject.SetActive(false);
+                    }
+                }
                 break;
             case "selfLoop":
-                go.transform.FindChild("Boucle").gameObject.SetActive(true);
+                for (int i = 0; i < go.transform.childCount; ++i)
+                {
+                    if (go.transform.GetChild(i).gameObject.name == "Boucle")
+                    {
+                        go.transform.GetChild(i).gameObject.SetActive(true);
+                    }
+                    else
+                    {
+                        go.transform.GetChild(i).gameObject.SetActive(false);
+                    }
+                }
                 break;
             default:
                 // instanciate normal
-                go.transform.FindChild("Boyau").gameObject.SetActive(true);
+                for (int i = 0; i < go.transform.childCount; ++i)
+                {
+                    if (go.transform.GetChild(i).gameObject.name == "Boyau")
+                    {
+                        go.transform.GetChild(i).gameObject.SetActive(true);
+                    }
+                    else
+                    {
+                        go.transform.GetChild(i).gameObject.SetActive(false);
+                    }
+                }
                 break;
         }
     }

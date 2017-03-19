@@ -5,13 +5,13 @@ using UnityEngine;
 public class Transition : MonoBehaviour {
     public enum tType {
         Red,
-        Green,
-        Blue,
         NotRed,
+        Green,
         NotGreen,
+        Blue,
         NotBlue,
-        Stomach,
-        All
+        All,
+        Stomach,        
     };
     public GameObject endNode;
     public GameObject startNode;
@@ -24,6 +24,7 @@ public class Transition : MonoBehaviour {
     void Start()
     {
         this.gameManager = GameObject.FindWithTag("GameManager").GetComponent<DrawingScript>();
+        transitionType = tType.All;
     }
 
     bool isResultWanted(char first, bool result) {
@@ -72,6 +73,33 @@ public class Transition : MonoBehaviour {
         }
         Debug.Log("non specified, indigestion");
         return isResultWanted(skewer[0], false);
+    }
+
+    public void NextState()
+    {
+        Debug.Log("Changing state from " + transitionType);
+        transitionType+=2;
+        if (transitionType > tType.All)
+        {
+            if ((int)transitionType % 2 == 0) transitionType = 0;
+            else transitionType = tType.Red;
+        }
+        Debug.Log(" to " + transitionType);
+    }
+
+    public void NegState()
+    {
+        if (transitionType != tType.All)
+        {
+            if (((int)transitionType % 2) == 0)
+            {
+                transitionType++;
+            }
+            else
+            {
+                transitionType--;
+            }
+        }
     }
 
 }

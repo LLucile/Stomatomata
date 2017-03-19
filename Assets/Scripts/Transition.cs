@@ -78,7 +78,6 @@ public class Transition : MonoBehaviour {
                 continue;
             }
         }
-        StartCoroutine(AnimationNulleCoroutine());
     }
 
 
@@ -133,6 +132,7 @@ public class Transition : MonoBehaviour {
         }
     }
 
+
     public bool eat(string skewer)
     {
         GameObject bulle = GameObject.Find("bulle(Clone)");
@@ -157,40 +157,28 @@ public class Transition : MonoBehaviour {
         {
             //Debug.Log("r");
             bulleStuff(bulle, pointeBulle, skewer);
-            StartCoroutine("AnimationNulleCoroutine");
-            if (isAnimationOver)
+            if (transitionType == tType.Green || transitionType == tType.Blue || transitionType == tType.NotRed)
             {
-                if (transitionType == tType.Green || transitionType == tType.Blue || transitionType == tType.NotRed)
-                {
-                    //Debug.Log("return");
-                    return isResultWanted(skewer[0], false);
-                }
+                //Debug.Log("return");
+                 return isResultWanted(skewer[0], false);
             }
         }
         else if (skewer[skewer.Length - 1] == 'g')
         {
             //Debug.Log("g");
             bulleStuff(bulle, pointeBulle, skewer);
-            StartCoroutine("AnimationNulleCoroutine");
-            if (isAnimationOver)
+            if (transitionType == tType.Red || transitionType == tType.Blue || transitionType == tType.NotGreen)
             {
-                if (transitionType == tType.Red || transitionType == tType.Blue || transitionType == tType.NotGreen)
-                {
-                    return isResultWanted(skewer[0], false);
-                }
+                return isResultWanted(skewer[0], false);
             }
         }
         else if (skewer[skewer.Length - 1] == 'b')
         {
             //Debug.Log("b");
             bulleStuff(bulle, pointeBulle, skewer);
-            StartCoroutine("AnimationNulleCoroutine");
-            if (isAnimationOver)
+            if (transitionType == tType.Red || transitionType == tType.Green || transitionType == tType.NotBlue)
             {
-                if (transitionType == tType.Red || transitionType == tType.Green || transitionType == tType.NotBlue)
-                {
-                    return isResultWanted(skewer[0], false);
-                }
+                return isResultWanted(skewer[0], false);
             }
         }
         else

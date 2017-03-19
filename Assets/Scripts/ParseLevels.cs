@@ -73,7 +73,7 @@ public class ParseLevels : MonoBehaviour {
                 GameObject skewElem = new GameObject();
                 skewElem.AddComponent<SpriteRenderer>();
                 skewElem.GetComponent<SpriteRenderer>().sortingOrder = 5;
-                skewElem.name = "nomnomnom";
+                skewElem.name = j.ToString();
                 if (level.skewerList[i][j] == 'r') {
                     skewElem.GetComponent<SpriteRenderer>().sprite = redPrefab;
                 } else if (level.skewerList[i][j] == 'g') {

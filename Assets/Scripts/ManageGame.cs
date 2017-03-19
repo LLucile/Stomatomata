@@ -7,6 +7,7 @@ public class ManageGame : MonoBehaviour {
     static int currentLevel = 0;
     Text rules;
     ParseLevels parser;
+    public GameObject BullePrefab;
     void Start() {
         parser = GameObject.FindObjectOfType<ParseLevels>();
         Text[] texts = GameObject.FindObjectsOfType<Text>();
@@ -35,10 +36,13 @@ public class ManageGame : MonoBehaviour {
         CleanupUnecessaryNode();
         ParseLevels.LevelStruct level = parser.getLevel(currentLevel);
         Node node = GameObject.Find("FirstNode").GetComponent<Node>();
+        GameObject bulle = Instantiate(BullePrefab);
         bool isSkewDone = false;
         for (int i = 0; i < level.skewerList.Count; ++i) {
+            GameObject brochette = Instantiate(parser.levelsGameObjects[i]);
+            brochette.transform.parent = bulle.transform;
             isSkewDone = false;
-            Debug.Log(i);
+            //Debug.Log(i);
             for (int j = 0; j < node.transitions.Count; ++j) {
                 if (node.transitions[j].GetComponent<Transition>().eat(level.skewerList[i])) {
                     Debug.Log(level.skewerList[i]);
@@ -48,9 +52,14 @@ public class ManageGame : MonoBehaviour {
             }
             if (!isSkewDone) {
                 Debug.Log("Level failed");
+                Destroy(bulle);
                 return;
             }
+            Debug.Log("destroy brochette");
+            Destroy(brochette);
         }
+        Debug.Log("destroy bulle");
+        Destroy(bulle);
         if (isSkewDone) {
             GoToNextLevel();
         }
@@ -67,7 +76,7 @@ public class ManageGame : MonoBehaviour {
         for (int i = 0; i < nodes.Length; ++i) {
             if (nodes[i].name == "FirstNode") {
                 clearList(nodes[i].transitions);
-            } else if (nodes[i].name != "FinalNode" && nodes[i].name != "EstomacFinal") {
+            } else if (nodes[i].name != "EstomacFinal") {
                 clearList(nodes[i].transitions);
                 Destroy(nodes[i].gameObject);
             }

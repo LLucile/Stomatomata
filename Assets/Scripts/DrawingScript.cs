@@ -83,7 +83,8 @@ public class DrawingScript : MonoBehaviour
             //Debug.Log("HERE IS A RIGHT CLICK !!!!!!!!!!!!!!!!!!");
             if (mouseRightDown)
             {
-                if (objectOver.CompareTag("TransitionChange"))
+                Debug.Log("Hey mouse is going DOWN !!!!!!!!!!!");
+                if (objectOver != null && objectOver.CompareTag("TransitionChange"))
                 {
                     this.objectOver.GetComponent<TypeTransition>().ChangeState(0);
                 }

@@ -33,7 +33,7 @@ public class TypeTransition : MonoBehaviour {
         }
         else if (neg == -1)
         {
-
+            this.transform.parent.GetComponentInParent<Transition>().StomachState();
         }
     }
 

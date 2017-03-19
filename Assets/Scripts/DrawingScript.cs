@@ -289,6 +289,7 @@ public class DrawingScript : MonoBehaviour
             case "normalLong":
                 for (int i = 0; i < go.transform.childCount; ++i)
                 {
+                    go.GetComponent<TypeTransition>().ChangeState(-1);
                     if (go.transform.GetChild(i).gameObject.name == "BoyauLong")
                     {
                         go.transform.GetChild(i).gameObject.SetActive(true);
@@ -300,6 +301,7 @@ public class DrawingScript : MonoBehaviour
                 }
                 break;
             case "stomach":
+                go.GetComponent<TypeTransition>().ChangeState(-1);
                 for (int i = 0; i < go.transform.childCount; ++i)
                 {
                     if (go.transform.GetChild(i).gameObject.name == "BoyauFinal")

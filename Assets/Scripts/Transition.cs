@@ -17,14 +17,31 @@ public class Transition : MonoBehaviour {
     public GameObject startNode;
     public tType transitionType;
 
+    private tType pTransitionType;
+
     private bool onmouseOver = false;
     public DrawingScript gameManager;
+
 
     // Use this for initialization
     void Start()
     {
         this.gameManager = GameObject.FindWithTag("GameManager").GetComponent<DrawingScript>();
         transitionType = tType.All;
+    }
+
+    void Update()
+    {
+        if (transitionType != pTransitionType)
+        {
+            //CHANGER L'AFFICHAGE
+                //Find active child
+                //Find its TypeTransitionObject
+                //Change its sprite
+                //if %2 == 0 yes
+                // else no
+        }
+        pTransitionType = transitionType;
     }
 
     bool isResultWanted(char first, bool result) {
@@ -100,6 +117,11 @@ public class Transition : MonoBehaviour {
                 transitionType--;
             }
         }
+    }
+
+    public void StomachState()
+    {
+        transitionType = tType.Stomach;
     }
 
 }

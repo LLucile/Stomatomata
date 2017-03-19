@@ -74,17 +74,4 @@ public class Transition : MonoBehaviour {
         return isResultWanted(skewer[0], false);
     }
 
-    void OnMouseExit()
-    {
-        this.onmouseOver = false;
-        gameManager.objectOver = null;
-        //Debug.Log("you're leaving " + this.gameObject.name);
-    }
-
-    void OnMouseEnter()
-    {
-        this.onmouseOver = true;
-        gameManager.objectOver = this.gameObject;
-        //Debug.Log("you're over " + this.gameObject.name);
-    }
 }

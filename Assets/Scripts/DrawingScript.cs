@@ -9,11 +9,8 @@ public class DrawingScript : MonoBehaviour
     public GameObject nodePrefab;
     public GameObject bouclePrefab;
 
-    public Sprite stomachSprite;
-    public Sprite selfLoopSprite;
-    public Sprite normalSprite;
-
     public float mouseDistanceMin = 0.4f;
+    public float mouseDistanceMinLong = 2.0f;
 
     public float drawingCanvasMinX = -5f;
     public float drawingCanvasMaxX = 5f;
@@ -40,6 +37,7 @@ public class DrawingScript : MonoBehaviour
 
     private bool newNode = false;
     private GameObject myNewNode;
+    private bool longSprite = false;
 
     // Use this for initialization
     void Start()
@@ -82,10 +80,10 @@ public class DrawingScript : MonoBehaviour
         }
         if (previousmouseRightDown != mouseRightDown)
         {
-            //Debug.Log("HERE IS A RIGHT CLICK !!!!!!!!!!!!!!!!!!");
+            Debug.Log("HERE IS A RIGHT CLICK !!!!!!!!!!!!!!!!!!");
             if (mouseRightDown)
             {
-                GameObject.Destroy(objectOver);
+                if(objectOver.name != "TypeTransition") GameObject.Destroy(objectOver);
             }
         }
         if (previousmouseDown != mouseDown)
@@ -154,12 +152,27 @@ public class DrawingScript : MonoBehaviour
                                 {
                                     Debug.Log("Snapping on Stomach !!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                                     currentTrans.transform.localScale = new Vector3(dist / 2, (currentTrans.transform.localScale.y / Mathf.Abs(currentTrans.transform.localScale.y)) * dist / 2, currentTrans.transform.localScale.z); //snap (middle of node)
-                                    this.currentTrans.GetComponentInChildren<SpriteRenderer>().sprite = stomachSprite;
+                                    if (longSprite)
+                                    {
+                                        SetSprite(currentTrans, "stomachLong");
+                                        currentTrans.transform.localScale = new Vector3(dist / 4, (currentTrans.transform.localScale.y / Mathf.Abs(currentTrans.transform.localScale.y)) * dist / 4, currentTrans.transform.localScale.z); //snap (middle of node)
+                                    }
+                                    else
+                                    {
+                                        SetSprite(currentTrans, "stomach");
+                                    }
                                 }
                                 //Debug.Log("endNode : " + this.endNode.name + " start Node : " + t.startNode);
                                 if (this.endNode != t.startNode)
                                 {
-                                    currentTrans.transform.localScale = new Vector3(dist / 2, (currentTrans.transform.localScale.y / Mathf.Abs(currentTrans.transform.localScale.y)) * dist / 2, currentTrans.transform.localScale.z); //snap (middle of node)
+                                    if (longSprite)
+                                    {
+                                        currentTrans.transform.localScale = new Vector3(dist / 4, (currentTrans.transform.localScale.y / Mathf.Abs(currentTrans.transform.localScale.y)) * dist / 4, currentTrans.transform.localScale.z); //snap (middle of node)
+                                    }
+                                    else
+                                    {
+                                        currentTrans.transform.localScale = new Vector3(dist / 2, (currentTrans.transform.localScale.y / Mathf.Abs(currentTrans.transform.localScale.y)) * dist / 2, currentTrans.transform.localScale.z); //snap (middle of node)
+                                    }
                                 }
                                 else
                                 {
@@ -219,19 +232,63 @@ public class DrawingScript : MonoBehaviour
             }
             if (mouseDistance > mouseDistanceMin)
             {
-                // TO DO : here we will need to add the sprite change for scale changes
-                this.currentTrans.GetComponentInChildren<SpriteRenderer>().sprite = normalSprite;
-                currentTrans.transform.localScale = new Vector3(mouseDistance / 2, (currentTrans.transform.localScale.y / Mathf.Abs(currentTrans.transform.localScale.y) )* mouseDistance / 2, currentTrans.transform.localScale.z);
+                if (mouseDistance > mouseDistanceMinLong)
+                {
+                    // TO DO : here we will need to add the sprite change for scale changes
+                    SetSprite(currentTrans, "normalLong");
+                    currentTrans.transform.localScale = new Vector3(mouseDistance / 4, (currentTrans.transform.localScale.y / Mathf.Abs(currentTrans.transform.localScale.y)) * mouseDistance / 4, currentTrans.transform.localScale.z);
+                    longSprite = true;
+                }
+                else
+                {
+                    // TO DO : here we will need to add the sprite change for scale changes
+                    Debug.Log("HI NORMAL SPRITE !");
+                    SetSprite(currentTrans, "normal");
+                    currentTrans.transform.localScale = new Vector3(mouseDistance / 2, (currentTrans.transform.localScale.y / Mathf.Abs(currentTrans.transform.localScale.y)) * mouseDistance / 2, currentTrans.transform.localScale.z);
+                    longSprite = false;
+                }
             }
             else
             {
                 //TO DO : here use self-node transition sprite
-                this.currentTrans.GetComponentInChildren<SpriteRenderer>().sprite = selfLoopSprite;
+                SetSprite(currentTrans, "selfLoop");
+                longSprite = false;
             }
         }
         previousmouseDown = mouseDown;
         previousmouseRightDown = mouseRightDown;
 
+    }
+
+
+    void SetSprite(GameObject go, string spriteType)
+    {
+        for (int i = 0; i < go.transform.childCount; ++i)
+        {
+            go.transform.GetChild(i).gameObject.SetActive(false);
+        }
+        switch (spriteType)
+        {
+            case "normal" :
+                go.transform.FindChild("Boyau").gameObject.SetActive(true);
+                break;
+            case "normalLong":
+                go.transform.FindChild("BoyauLong").gameObject.SetActive(true);
+                break;
+            case "stomach":
+                go.transform.FindChild("BoyauFinal").gameObject.SetActive(true);
+                break;
+            case "stomachLong":
+                go.transform.FindChild("BoyauFinalLong").gameObject.SetActive(true);
+                break;
+            case "selfLoop":
+                go.transform.FindChild("Boucle").gameObject.SetActive(true);
+                break;
+            default:
+                // instanciate normal
+                go.transform.FindChild("Boyau").gameObject.SetActive(true);
+                break;
+        }
     }
 
 }

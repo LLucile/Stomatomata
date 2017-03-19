@@ -36,10 +36,13 @@ public class Transition : MonoBehaviour {
         {
             //CHANGER L'AFFICHAGE
                 //Find active child
+            for (int i = 0; i < this.transform.childCount; ++i)
+            {
                 //Find its TypeTransitionObject
                 //Change its sprite
                 //if %2 == 0 yes
                 // else no
+            }                
         }
         pTransitionType = transitionType;
     }

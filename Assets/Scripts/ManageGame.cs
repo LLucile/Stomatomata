@@ -23,7 +23,7 @@ public class ManageGame : MonoBehaviour {
     private float timerResultDisplay = 180;
     private bool resultDisplay = false;
 
-    //public GameObject BullePrefab;
+    public GameObject BullePrefab;
     void Start() {
         parser = GameObject.FindObjectOfType<ParseLevels>();
         Text[] texts = GameObject.FindObjectsOfType<Text>();
@@ -98,19 +98,19 @@ public class ManageGame : MonoBehaviour {
         CleanupUnecessaryNode();
         ParseLevels.LevelStruct level = parser.getLevel(currentLevel);
         Node node = GameObject.Find("FirstNode").GetComponent<Node>();
-        //GameObject bulle = Instantiate(BullePrefab);
+        GameObject bulle = Instantiate(BullePrefab);
         bool isSkewDone = false;
         for (int i = 0; i < level.skewerList.Count; ++i) {
-            //GameObject brochette = Instantiate(parser.levelsGameObjects[i]);
-            //brochette.transform.parent = bulle.transform;
+            GameObject brochette = Instantiate(parser.levelsGameObjects[i]);
+            brochette.transform.parent = bulle.transform;
             isSkewDone = false;
             //Debug.Log(i);
             for (int j = 0; j < node.transitions.Count; ++j) {
-                if (node.transitions[j].GetComponent<Transition>().eat(level.skewerList[i])) {
-                    //Debug.Log(level.skewerList[i]);
-                    isSkewDone = true;
-                    continue;
-                }
+                StartCoroutine(node.transitions[j].GetComponent<Transition>().eat(level.skewerList[i],(myReturnValue) => {
+                    if(myReturnValue) { //Debug.Log(level.skewerList[i]); 
+                        isSkewDone = true;
+                    }
+                 }));
             }
             if (!isSkewDone) {
                 brochetteFailedOrPassed.gameObject.SetActive(true);
@@ -118,14 +118,14 @@ public class ManageGame : MonoBehaviour {
                 brochetteFailedOrPassed.text += " \n Brochette " + i + " failed the test";
                 resultDisplay = true;
                 Debug.Log("Level failed");
-                //Destroy(bulle);
+                Destroy(bulle);
                 return;
             }
             //Debug.Log("destroy brochette");
-            //Destroy(brochette);
+            Destroy(brochette);
         }
-        //Debug.Log("destroy bulle");
-        //Destroy(bulle);
+        Debug.Log("destroy bulle");
+        Destroy(bulle);
         if (isSkewDone) {
             GoToNextLevel();
         }

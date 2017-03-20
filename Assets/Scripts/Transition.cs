@@ -29,6 +29,8 @@ public class Transition : MonoBehaviour {
     private Transform tpanel;
     private bool isAnimationOver = false;
 
+    public float waitingTime = 2f;
+
 
     // Use this for initialization
     void Start()
@@ -47,7 +49,6 @@ public class Transition : MonoBehaviour {
             {
                 if(transform.GetChild(i).gameObject.activeSelf) tpanel = transform.GetChild(i).FindChild("Panneau");        
             }
-            Debug.Log(tpanel.name);
             //Find its TypeTransitionObject
             if (transitionType < tType.All)
             {
@@ -70,7 +71,7 @@ public class Transition : MonoBehaviour {
         return false;
     }
 
-   /* void bulleStuff(GameObject bulle, Transform pointeBulle, string skewer)
+   void bulleStuff(GameObject bulle, Transform pointeBulle, string skewer)
     {
         bulle.transform.position += endNode.transform.position - pointeBulle.position;
         Transform[] childs = bulle.GetComponentsInChildren<Transform>();
@@ -83,7 +84,7 @@ public class Transition : MonoBehaviour {
                 continue;
             }
         }
-    }*/
+    }
 
 
     private void SetBack(int yesno){
@@ -138,58 +139,61 @@ public class Transition : MonoBehaviour {
     }
 
 
-    public bool eat(string skewer)
+    public IEnumerator eat(string skewer, System.Action<bool> callback)
     {
-        //GameObject bulle = GameObject.Find("bulle(Clone)");
-        //Transform[] bulleChilds = bulle.GetComponentsInChildren<Transform>();
-        //Transform pointeBulle = null;
+        GameObject bulle = GameObject.Find("bulle(Clone)");
+        Transform[] bulleChilds = bulle.GetComponentsInChildren<Transform>();
+        Transform pointeBulle = null;
         Debug.Log("----------------EATING " + gameObject.name);
-        /*for (int i = 0; i < bulleChilds.Length; ++i)
+        for (int i = 0; i < bulleChilds.Length; ++i)
         {
             if (bulleChilds[i].name == "Pointe")
             {
                 pointeBulle = bulleChilds[i];
                 continue;
             }
-        }*/
+        }
         if (transitionType == tType.Stomach)
         {
-            return isResultWanted(skewer[skewer.Length - 1], true);
+            callback(isResultWanted(skewer[skewer.Length - 1], true));
         }
         //Debug.Log("------------------");
         //Debug.Log(skewer);
         if (skewer[skewer.Length - 1] == 'r')
         {
             //Debug.Log("r");
-            //bulleStuff(bulle, pointeBulle, skewer);
+            bulleStuff(bulle, pointeBulle, skewer);
+            yield return new WaitForSeconds(waitingTime);
             if (transitionType == tType.Green || transitionType == tType.Blue || transitionType == tType.NotRed)
             {
-                //Debug.Log("return");
-                 return isResultWanted(skewer[0], false);
+                 callback(isResultWanted(skewer[0], false));
             }
         }
         else if (skewer[skewer.Length - 1] == 'g')
         {
             //Debug.Log("g");
-            //bulleStuff(bulle, pointeBulle, skewer);
+            bulleStuff(bulle, pointeBulle, skewer);
+            yield return new WaitForSeconds(waitingTime);
             if (transitionType == tType.Red || transitionType == tType.Blue || transitionType == tType.NotGreen)
             {
-                return isResultWanted(skewer[0], false);
+                callback(isResultWanted(skewer[0], false));
             }
         }
         else if (skewer[skewer.Length - 1] == 'b')
         {
-            //Debug.Log("b");
-            //bulleStuff(bulle, pointeBulle, skewer);
+            Debug.Log("b");
+            bulleStuff(bulle, pointeBulle, skewer);
+            yield return new WaitForSeconds(waitingTime);
             if (transitionType == tType.Red || transitionType == tType.Green || transitionType == tType.NotBlue)
             {
-                return isResultWanted(skewer[0], false);
+                callback(isResultWanted(skewer[0], false));
             }
         }
         else
         {
             Debug.Log("stomach not found");
-            return isResultWanted(skewer[0], false);
+            yield return new WaitForSeconds(waitingTime);
+            callback(isResultWanted(skewer[0], false));
         }
         Node nextNode = endNode.GetComponent<Node>();
         skewer = skewer.Substring(0, skewer.Length - 1);
@@ -200,13 +204,15 @@ public class Transition : MonoBehaviour {
         {
             //Debug.Log(nextNode.transitions[i].name);
             //Debug.Log(skewer);
-            if (nextNode.transitions[i].GetComponent<Transition>().eat(skewer))
-            {
-                return true;
-            }
+            StartCoroutine(nextNode.transitions[i].GetComponent<Transition>().eat(skewer, myReturnValue => {
+                    if(myReturnValue) {
+                        callback(true); 
+                    }
+            }));
         }
         Debug.Log("non specified, indigestion");
-        return isResultWanted(skewer[0], false);
+        yield return new WaitForSeconds(waitingTime);
+        callback(isResultWanted(skewer[0], false));
     }
 
     public void NextState()

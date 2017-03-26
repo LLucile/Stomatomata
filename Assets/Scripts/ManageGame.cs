@@ -37,6 +37,7 @@ public class ManageGame : MonoBehaviour {
 
     void Update()
     {
+        //change resultDisplay for Feeder.processed
         if (resultDisplay)
         {
             timerResultDisplay--;
@@ -93,7 +94,7 @@ public class ManageGame : MonoBehaviour {
         }
     }
 
-    public void tryToEat() {
+    /*public void tryToEat() {
         CleanupUnecessaryNode();
         ParseLevels.LevelStruct level = parser.getLevel(currentLevel);
         Node node = GameObject.Find("FirstNode").GetComponent<Node>();
@@ -128,7 +129,7 @@ public class ManageGame : MonoBehaviour {
         if (isSkewDone) {
             GoToNextLevel();
         }
-    }
+    }*/
 
     void clearList(List<GameObject> obj) {
         for (int i = 0; i < obj.Count; ++i) {

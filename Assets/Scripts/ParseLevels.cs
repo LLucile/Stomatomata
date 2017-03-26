@@ -10,6 +10,7 @@ public class ParseLevels : MonoBehaviour {
         public List<string> skewerList;
         public string description;
     }
+
     public List<GameObject> levelsGameObjects;
     [HideInInspector]
     public List<LevelStruct> levels;
@@ -61,26 +62,33 @@ public class ParseLevels : MonoBehaviour {
             stick.GetComponent<SpriteRenderer>().sortingOrder = 4;
             GameObject eatable = new GameObject();
             eatable.AddComponent<SpriteRenderer>();
+            eatable.AddComponent<NodeType>();
             eatable.GetComponent<SpriteRenderer>().sortingOrder = 5;
             eatable.name = "isEatable";
             eatable.transform.SetParent(metaStick.transform);
             eatable.transform.localPosition = pos - new Vector3(step.x, .0f, .0f);
             if (level.skewerList[i][0] == 'x') {
                 eatable.GetComponent<SpriteRenderer>().sprite = alienPrefab;
+                eatable.GetComponent<NodeType>().type = NodeType.tType.Alien;
             } else {
                 eatable.GetComponent<SpriteRenderer>().sprite = humanPrefab;
+                eatable.GetComponent<NodeType>().type = NodeType.tType.Stomach;
             }
             for (int j = 1; j < level.skewerList[i].Length; ++j) {
                 GameObject skewElem = new GameObject();
                 skewElem.AddComponent<SpriteRenderer>();
+                skewElem.AddComponent<NodeType>();
                 skewElem.GetComponent<SpriteRenderer>().sortingOrder = 5;
                 skewElem.name = j.ToString();
                 if (level.skewerList[i][j] == 'r') {
                     skewElem.GetComponent<SpriteRenderer>().sprite = redPrefab;
+                    skewElem.GetComponent<NodeType>().type = NodeType.tType.Red;
                 } else if (level.skewerList[i][j] == 'g') {
                     skewElem.GetComponent<SpriteRenderer>().sprite = greenPrefab;
+                    skewElem.GetComponent<NodeType>().type = NodeType.tType.Green;
                 } else {
                     skewElem.GetComponent<SpriteRenderer>().sprite = bluePrefab;
+                    skewElem.GetComponent<NodeType>().type = NodeType.tType.Blue;
                 }
                 skewElem.transform.SetParent(metaStick.transform);
                 skewElem.transform.localPosition = pos;

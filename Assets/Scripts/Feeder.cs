@@ -16,7 +16,6 @@ public class Feeder : MonoBehaviour {
     private float timer = 0;
     private int mealCount = 0;
 
-    public bool passed = false;
     public bool processed = false;
 
     public GameObject mouthNode;
@@ -25,6 +24,8 @@ public class Feeder : MonoBehaviour {
     private GameObject currentNode;
     private int transitionsCount = 0;
     private GameObject transition = null;
+
+    public List<bool> results;
 
     ParseLevels parser;
 
@@ -36,23 +37,27 @@ public class Feeder : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        //If eat function as been called and eating process is not done yet
         if (eating)
         {
             if (timer > timeToWait)
             {
                 //Debug.Log( mealCount + " brochettes left");
+                //if there is nothing left to eat
                 if (mealCount == 0)
                 {
                     Debug.Log("no brochette left");
                     eating = false;
-                    passed = true;
                     processed = true;
                     currentBrochette = null;
                 }
                 else
                 {
+                    //if there is no aliment left on the brochette
                     if (0 == currentAlimentIndex)
                     {
+                        //La brochette a bien été digérée :
+                        results.Add(true);
                         mealCount--;
                         if (mealCount > 0)
                         {
@@ -64,6 +69,7 @@ public class Feeder : MonoBehaviour {
                     }
                     else
                     {
+                        //pick first aliment
                         currentAliment = currentBrochette.transform.GetChild(currentAlimentIndex).gameObject;
                         Debug.Log("picked Aliment " + currentAliment.name + " in brochette " + currentBrochette.name);
                         //Let's try to add a shader effect
@@ -92,19 +98,24 @@ public class Feeder : MonoBehaviour {
                                 isValid = true;
                             }
                             if(isValid){
-                                transitionsCount ++;
                                 transition = currentNode.GetComponent<Node>().transitions[i];
                             }
                             isValid = false;
                         }
-                            // if no unicity : 
-                        if(transitionsCount !=1){
+                        if(transition == null){
                             //fail : set color aliment slight red
                             Debug.Log("Cet aliment n'est pas digéré");
-                            passed = false;
-                            processed = true;
-                            eating = false;
-                            transitionsCount = 0;
+                            //Resultat de la brochette : false. 
+                            results.Add(false);
+                            //Passer à la brochette suivante 
+                            mealCount--;
+                            if (mealCount > 0)
+                            {
+                                currentBrochette = meal[0];
+                                meal.Remove(currentBrochette);
+                                currentAlimentIndex = currentBrochette.transform.childCount - 1;
+                                currentNode = mouthNode;
+                            }
                         }
                         else{
                             //travel aliment : set color aliment slight green
@@ -144,7 +155,6 @@ public class Feeder : MonoBehaviour {
         meal.Remove(currentBrochette);
         currentAlimentIndex = currentBrochette.transform.childCount -1;
         processed = false;
-        passed = false;
         currentNode = mouthNode;
     }
 

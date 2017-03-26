@@ -8,6 +8,8 @@ public class ManageGame : MonoBehaviour {
     public GameObject panel;
     static int currentLevel = 0;
 
+    public float timeToDisplayRes = 180f;
+
     private int pLevel = 0;
 
     public Text greet;
@@ -24,6 +26,7 @@ public class ManageGame : MonoBehaviour {
     private bool resultDisplay = false;
 
     public GameObject BullePrefab;
+
     void Start() {
         parser = GameObject.FindObjectOfType<ParseLevels>();
         Text[] texts = GameObject.FindObjectsOfType<Text>();
@@ -38,15 +41,23 @@ public class ManageGame : MonoBehaviour {
     void Update()
     {
         //change resultDisplay for Feeder.processed
-        if (resultDisplay)
+        if (BullePrefab.GetComponent<Feeder>().processed)
         {
-            timerResultDisplay--;
-            if (timerResultDisplay < 0)
+            if (timerResultDisplay == timeToDisplayRes)
             {
-                timerResultDisplay = 180;
-                resultDisplay = false;
+                brochetteFailedOrPassed.gameObject.SetActive(true);
+                brochetteFailedOrPassed.transform.parent.gameObject.SetActive(true);
+                // TODO Comparer tableau de résultat dans feeder avec tableau de résultat souhaité.
+                // Si échec afficher la brochette en cause
+                    //brochetteFailedOrPassed.text += " \n Brochette " + i + " failed the test";
+            }            
+            else if (timerResultDisplay < 0)
+            {
+                timerResultDisplay = timeToDisplayRes;
+                BullePrefab.GetComponent<Feeder>().processed = false;
                 brochetteFailedOrPassed.gameObject.SetActive(false);
             }
+            timerResultDisplay--;
         }
         if (currentLevel != pLevel){
             displayLevel = true;

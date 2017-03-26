@@ -83,7 +83,7 @@ public class DrawingScript : MonoBehaviour
             //Debug.Log("HERE IS A RIGHT CLICK !!!!!!!!!!!!!!!!!!");
             if (mouseRightDown)
             {
-                Debug.Log("Hey mouse is going DOWN !!!!!!!!!!!");
+                //Debug.Log("Hey mouse is going DOWN !!!!!!!!!!!");
                 if (objectOver != null && objectOver.CompareTag("TransitionChange"))
                 {
                     this.objectOver.GetComponent<TypeTransition>().ChangeState(0);
@@ -117,7 +117,7 @@ public class DrawingScript : MonoBehaviour
                     }
                     else if (this.objectOver != null && this.objectOver.CompareTag("TransitionChange"))
                     {
-                        Debug.Log("HEY ! Let's change transition state !");
+                        //Debug.Log("HEY ! Let's change transition state !");
                         this.objectOver.GetComponent<TypeTransition>().ChangeState(1);
                     }
                 }

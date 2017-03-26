@@ -45,7 +45,6 @@ public class ManageGame : MonoBehaviour {
                 timerResultDisplay = 180;
                 resultDisplay = false;
                 brochetteFailedOrPassed.gameObject.SetActive(false);
-                brochetteFailedOrPassed.transform.parent.gameObject.SetActive(false);
             }
         }
         if (currentLevel != pLevel){

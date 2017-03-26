@@ -26,9 +26,9 @@ public class Node : MonoBehaviour {
 
     public void CreateTrans(Vector3 position)
     {
-        Debug.Log(this.gameObject.name + " said : I am going to instanciate something !");
+        //Debug.Log(this.gameObject.name + " said : I am going to instanciate something !");
         GameObject newTrans = Instantiate(transitionsPrefab, position, Quaternion.identity);
-        Debug.Log(this.gameObject.name + " said : Instantiated " + newTrans.name);
+        //Debug.Log(this.gameObject.name + " said : Instantiated " + newTrans.name);
         newTrans.GetComponent<Transition>().startNode = this.gameObject;
         this.transitions.Add(newTrans);
         this.gameManager.currentTrans = newTrans;

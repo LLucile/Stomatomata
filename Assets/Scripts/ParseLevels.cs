@@ -10,10 +10,11 @@ public class ParseLevels : MonoBehaviour {
         public List<string> skewerList;
         public string description;
     }
+    public List<GameObject> levelsGameObjects;
     [HideInInspector]
     public List<LevelStruct> levels;
     [HideInInspector]
-    public List<GameObject> levelsGameObjects;
+    //public List<GameObject> levelsGameObjects;
     public Sprite redPrefab;
     public Sprite bluePrefab;
     public Sprite greenPrefab;

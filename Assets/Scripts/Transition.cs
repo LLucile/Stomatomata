@@ -217,14 +217,14 @@ public class Transition : MonoBehaviour {
 
     public void NextState()
     {
-        Debug.Log(" and is changing state from " + transitionType);
+        //Debug.Log(" and is changing state from " + transitionType);
         transitionType+=2;
         if (transitionType > tType.All)
         {
             if ((int)transitionType % 2 == 0) transitionType = 0;
             else transitionType = tType.NotRed;
         }
-        Debug.Log(" to " + transitionType);
+        //Debug.Log(" to " + transitionType);
     }
 
     public void NegState()
